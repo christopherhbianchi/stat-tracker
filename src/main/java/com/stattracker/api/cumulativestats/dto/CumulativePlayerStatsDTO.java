@@ -1,9 +1,11 @@
-package com.stattracker.cumulativestats.dto;
+package com.stattracker.api.cumulativestats.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.stattracker.cumulativestats.model.CumulativePlayerStats;
+import com.stattracker.api.cumulativestats.model.CumulativePlayerStats;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author Christopher Bianchi
@@ -13,13 +15,13 @@ import lombok.Setter;
 public class CumulativePlayerStatsDTO {
     private String lastUpdatedOn;
     @JsonProperty("playerstatsentry")
-    private PlayerStatsEntryDTO playerStatsEntry;
+    private List<PlayerStatsEntryDTO> playerStatsEntryDTOs;
 
     public static CumulativePlayerStatsDTO fromCumulativePlayerStats(CumulativePlayerStats cumulativePlayerStats) {
         CumulativePlayerStatsDTO cumulativePlayerStatsDTO = new CumulativePlayerStatsDTO();
 
         cumulativePlayerStatsDTO.setLastUpdatedOn(cumulativePlayerStats.getLastUpdatedOn());
-        cumulativePlayerStatsDTO.setPlayerStatsEntry(PlayerStatsEntryDTO.fromPlayerStatsEntry(cumulativePlayerStats.getPlayerStatsEntry()));
+        cumulativePlayerStatsDTO.setPlayerStatsEntryDTOs(PlayerStatsEntryDTO.fromPlayerStatsEntryList(cumulativePlayerStats.getPlayerStatsEntryList()));
 
         return cumulativePlayerStatsDTO;
     }

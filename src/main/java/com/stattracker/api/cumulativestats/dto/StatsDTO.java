@@ -1,10 +1,9 @@
-package com.stattracker.cumulativestats.dto;
+package com.stattracker.api.cumulativestats.dto;
 
-import com.stattracker.cumulativestats.model.Stats;
+import com.stattracker.api.cumulativestats.model.Stats;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 

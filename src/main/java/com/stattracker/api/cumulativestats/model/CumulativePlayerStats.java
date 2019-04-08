@@ -1,8 +1,10 @@
-package com.stattracker.cumulativestats.model;
+package com.stattracker.api.cumulativestats.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author Christopher Bianchi
@@ -12,5 +14,5 @@ import lombok.Setter;
 public class CumulativePlayerStats {
     private String lastUpdatedOn;
     @JsonProperty("playerstatsentry")
-    private PlayerStatsEntry playerStatsEntry;
+    private List<PlayerStatsEntry> playerStatsEntryList;
 }

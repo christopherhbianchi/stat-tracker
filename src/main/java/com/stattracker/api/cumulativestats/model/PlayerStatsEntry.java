@@ -1,4 +1,4 @@
-package com.stattracker.cumulativestats.model;
+package com.stattracker.api.cumulativestats.model;
 
 import lombok.Getter;
 import lombok.Setter;

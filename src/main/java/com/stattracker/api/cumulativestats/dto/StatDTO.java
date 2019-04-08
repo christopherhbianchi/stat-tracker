@@ -1,7 +1,7 @@
-package com.stattracker.cumulativestats.dto;
+package com.stattracker.api.cumulativestats.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.stattracker.cumulativestats.model.Stat;
+import com.stattracker.api.cumulativestats.model.Stat;
 import lombok.Getter;
 import lombok.Setter;
 

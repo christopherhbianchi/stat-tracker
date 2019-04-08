@@ -1,4 +1,4 @@
-package com.stattracker.cumulativestats.model;
+package com.stattracker.api.cumulativestats.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
