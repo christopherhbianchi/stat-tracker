@@ -1,6 +1,6 @@
 package com.stattracker.api.cumulativestats;
 
-import com.stattracker.api.cumulativestats.dto.CumulativePlayerStatsDTO;
+import com.stattracker.api.cumulativestats.dto.CumulativeStatDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +20,8 @@ public class CumulativeStatsController {
     }
 
     @GetMapping("/category/{category}/limit/{limit}")
-    public CumulativePlayerStatsDTO getPlayerStatsByCategoryAndLimit(@PathVariable String category,
-                                                                     @PathVariable String limit) {
+    public CumulativeStatDTO getPlayerStatsByCategoryAndLimit(@PathVariable String category,
+                                                              @PathVariable String limit) {
         return cumulativeStatsService.getPlayerStatsByCategoryAndLimit(category, limit);
     }
 }

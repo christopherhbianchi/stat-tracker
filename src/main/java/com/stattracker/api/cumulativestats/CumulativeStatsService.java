@@ -1,6 +1,6 @@
 package com.stattracker.api.cumulativestats;
 
-import com.stattracker.api.cumulativestats.dto.CumulativePlayerStatsDTO;
+import com.stattracker.api.cumulativestats.dto.CumulativeStatDTO;
 
 /**
  * Getting the player stats by category will retrieve the top 10 players by a specific category name.
@@ -12,6 +12,6 @@ import com.stattracker.api.cumulativestats.dto.CumulativePlayerStatsDTO;
  * @author Christopher Bianchi
  **/
 public interface CumulativeStatsService {
-    CumulativePlayerStatsDTO getPlayerStatsByCategoryAndLimit(String category, String limit);
-    CumulativePlayerStatsDTO getPlayerStatsByTeam(String teamName);
+    CumulativeStatDTO getPlayerStatsByCategoryAndLimit(String category, String limit);
+    CumulativeStatDTO getPlayerStatsByTeam(String teamName);
 }

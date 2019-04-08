@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -16,7 +17,7 @@ public class PlayerStatsEntryDTO {
 
     private PlayerDTO playerDTO;
     private TeamDTO teamDTO;
-    private StatsDTO statsDTO;
+    private Map<String, StatDTO> statDTOs;
 
     private static PlayerStatsEntryDTO fromPlayerStatsEntry(PlayerStatsEntry playerStatsEntry) {
 
@@ -28,7 +29,13 @@ public class PlayerStatsEntryDTO {
             playerStatsEntryDTO.setTeamDTO(TeamDTO.fromTeam(playerStatsEntry.getTeam()));
         }
         if (playerStatsEntry.getStats() != null) {
-            playerStatsEntryDTO.setStatsDTO(StatsDTO.fromStats(playerStatsEntry.getStats()));
+
+            Map<String, StatDTO> statDTOs = playerStatsEntry.getStats().entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> StatDTO.fromStat(entry.getValue())));
+
+            playerStatsEntryDTO.setStatDTOs(statDTOs);
+
+
         }
 
         return playerStatsEntryDTO;

@@ -2,15 +2,12 @@ package com.stattracker.api.cumulativestats.internal;
 
 import com.google.gson.JsonParseException;
 import com.stattracker.api.cumulativestats.CumulativeStatsService;
-import com.stattracker.api.cumulativestats.dto.CumulativePlayerStatsDTO;
-import com.stattracker.api.cumulativestats.model.CumulativePlayerStats;
+import com.stattracker.api.cumulativestats.dto.CumulativeStatDTO;
+import com.stattracker.api.cumulativestats.model.CumulativeStat;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -32,25 +29,27 @@ public class CumulativeStatsServiceImpl implements CumulativeStatsService {
         this.webClient = webClient;
     }
 
-    @Override
-    public CumulativePlayerStatsDTO getPlayerStatsByCategoryAndLimit(String category, String limit) {
 
+    @Override
+    public CumulativeStatDTO getPlayerStatsByCategoryAndLimit(String category, String limit) {
+
+        // TODO: account for the encoding of the "%" being "%25" when the FE makes the request to BE
         Map<String, String> params = new HashMap<>();
         params.put("limit", limit);
         params.put("category", String.format("stats.%s.D", category)); // category would be "3PM" so we now need to create the proper String with String.format
 
-        Optional<CumulativePlayerStats> cumulativePlayerStatsOptional = webClient.get()
+        Optional<CumulativeStat> cumulativeStatOptional = webClient.get()
                 .uri(playersByCategoryUrl, params)
                 .retrieve()
-                .bodyToMono(CumulativePlayerStats.class)
+                .bodyToMono(CumulativeStat.class)
                 .blockOptional();
 
-        return cumulativePlayerStatsOptional.map(cumulativePlayerStats -> CumulativePlayerStatsDTO.fromCumulativePlayerStats(cumulativePlayerStats))
+        return cumulativeStatOptional.map(cumulativeStat -> CumulativeStatDTO.fromCumulativeStat(cumulativeStat))
                 .orElseThrow(() -> new JsonParseException("Could not read cumulative player stats"));
     }
 
     @Override
-    public CumulativePlayerStatsDTO getPlayerStatsByTeam(String teamName) {
+    public CumulativeStatDTO getPlayerStatsByTeam(String teamName) {
 
         return null;
     }
