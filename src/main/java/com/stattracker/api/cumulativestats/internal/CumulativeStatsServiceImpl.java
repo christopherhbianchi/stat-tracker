@@ -1,6 +1,7 @@
 package com.stattracker.api.cumulativestats.internal;
 
 import com.google.gson.JsonParseException;
+import com.stattracker.api.common.StatTrackerConstants;
 import com.stattracker.api.cumulativestats.CumulativeStatsService;
 import com.stattracker.api.cumulativestats.dto.CumulativeStatDTO;
 import com.stattracker.api.cumulativestats.model.CumulativeStat;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -18,25 +20,27 @@ import java.util.Optional;
 @Service
 public class CumulativeStatsServiceImpl implements CumulativeStatsService {
 
+    @Value("${application.authorization}")
+    private String authorization;
     private final WebClient webClient;
     private final String playersByCategoryUrl;
-    @Value("${application.authorization}")
-    String authorization;
+    private final String statsByTeamUrl;
 
     public CumulativeStatsServiceImpl(WebClient webClient,
-                                      @Value("${cumulativeStats.playersByCategory}") String playersByCategoryUrl) {
-        this.playersByCategoryUrl = playersByCategoryUrl;
+                                      @Value("${cumulativeStats.api.playersByCategory}") String playersByCategoryUrl,
+                                      @Value("${cumulativeStats.api.statsByTeam}") String statsByTeamUrl) {
         this.webClient = webClient;
+        this.playersByCategoryUrl = playersByCategoryUrl;
+        this.statsByTeamUrl = statsByTeamUrl;
     }
 
 
     @Override
     public CumulativeStatDTO getPlayerStatsByCategoryAndLimit(String category, String limit) {
 
-        // TODO: account for the encoding of the "%" being "%25" when the FE makes the request to BE
-        Map<String, String> params = new HashMap<>();
-        params.put("limit", limit);
-        params.put("category", String.format("stats.%s.D", category)); // category would be "3PM" so we now need to create the proper String with String.format
+        Map<String, String> params = new HashMap<>(); // TODO: account for the encoding of the "%" being "%25" when the FE makes the request to BE
+        params.put(StatTrackerConstants.LIMIT, limit);
+        params.put(StatTrackerConstants.CATEGORY, String.format(StatTrackerConstants.STATS_BY_CATEGORY_FORMATTER, category));
 
         Optional<CumulativeStat> cumulativeStatOptional = webClient.get()
                 .uri(playersByCategoryUrl, params)
@@ -44,13 +48,20 @@ public class CumulativeStatsServiceImpl implements CumulativeStatsService {
                 .bodyToMono(CumulativeStat.class)
                 .blockOptional();
 
-        return cumulativeStatOptional.map(cumulativeStat -> CumulativeStatDTO.fromCumulativeStat(cumulativeStat))
+        return cumulativeStatOptional.map(CumulativeStatDTO::fromCumulativeStat)
                 .orElseThrow(() -> new JsonParseException("Could not read cumulative player stats"));
     }
 
     @Override
-    public CumulativeStatDTO getPlayerStatsByTeam(String teamName) {
+    public CumulativeStatDTO getPlayerStatsByTeamName(String teamName) {
 
-        return null;
+        Optional<CumulativeStat> cumulativeStatOptional = webClient.get()
+                .uri(statsByTeamUrl, Collections.singletonMap(StatTrackerConstants.TEAM_NAME, teamName))
+                .retrieve()
+                .bodyToMono(CumulativeStat.class)
+                .blockOptional();
+
+        return cumulativeStatOptional.map(CumulativeStatDTO::fromCumulativeStat)
+                .orElseThrow(() -> new JsonParseException("Could not read team's cumulative player stats"));
     }
 }

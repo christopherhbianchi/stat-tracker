@@ -24,4 +24,9 @@ public class CumulativeStatsController {
                                                               @PathVariable String limit) {
         return cumulativeStatsService.getPlayerStatsByCategoryAndLimit(category, limit);
     }
+
+    @GetMapping("/team/{teamName}")
+    public CumulativeStatDTO getPlayerStatsByTeamName(@PathVariable String teamName) {
+        return cumulativeStatsService.getPlayerStatsByTeamName(teamName);
+    }
 }

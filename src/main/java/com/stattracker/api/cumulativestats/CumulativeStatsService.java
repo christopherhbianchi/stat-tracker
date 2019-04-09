@@ -13,5 +13,5 @@ import com.stattracker.api.cumulativestats.dto.CumulativeStatDTO;
  **/
 public interface CumulativeStatsService {
     CumulativeStatDTO getPlayerStatsByCategoryAndLimit(String category, String limit);
-    CumulativeStatDTO getPlayerStatsByTeam(String teamName);
+    CumulativeStatDTO getPlayerStatsByTeamName(String teamName);
 }

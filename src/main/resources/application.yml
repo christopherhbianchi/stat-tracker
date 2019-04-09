@@ -4,7 +4,10 @@ server:
     context-path: /api
 
 cumulativeStats:
-  playersByCategory: "https://api.mysportsfeeds.com/v1.2/pull/nba/2018-2019-regular/cumulative_player_stats.json?sort={category}&limit={limit}"
+  api:
+    base: "https://api.mysportsfeeds.com/v1.2/pull/nba/2018-2019-regular/cumulative_player_stats.json?"
+    playersByCategory: "${cumulativeStats.api.base}sort={category}&limit={limit}"
+    statsByTeam: "${cumulativeStats.api.base}team={teamName}"
     # the stat to sort by and the limit will be passed in via the FE since FE will request for more than 10 behind the scenes after initial call
 
 application:
